@@ -1,6 +1,7 @@
 class Player {
-  constructor(ctx) {
+  constructor(ctx, platform) {
     this.ctx = ctx;
+    this.platform = platform;
 
     this.x = 50;
     this.y = 360;
@@ -10,6 +11,8 @@ class Player {
 
     this.w = 50;
     this.h = 75;
+
+    this.y0 = this.ctx.canvas.height * 0.75;
 
     this.g = 0.4;
 
@@ -47,9 +50,9 @@ class Player {
     this.x += this.vx;
     this.y += this.vy;
 
-    if (this.y >= this.ctx.canvas.height * 0.75) {
+    if (this.y >= this.y0) {
       this.vy = 0;
-      this.y = this.ctx.canvas.height * 0.75;
+      this.y = this.y0;
     }
 
     this.tick++;
@@ -59,7 +62,22 @@ class Player {
       this.animate();
     }
 
+    this.checkPlatform();
+
     this.score.move();
+  }
+
+  checkPlatform() {
+    if (
+      this.y + this.h > this.platform.y &&
+      this.x + this.w > this.platform.x &&
+      this.x < this.platform.x + this.platform.w &&
+      this.vy > 0
+    ) {
+      this.y0 = this.platform.y - this.h;
+    } else {
+      this.y0 = this.ctx.canvas.height * 0.75;
+    }
   }
 
   animate() {

@@ -4,7 +4,8 @@ class Game {
     this.interval = null;
 
     this.background = new Background(ctx);
-    this.player = new Player(ctx);
+    this.platform = new Platform(ctx);
+    this.player = new Player(ctx, this.platform);
     this.enemies = [];
     this.tick = 0;
 
@@ -48,12 +49,14 @@ class Game {
   draw() {
     this.background.draw();
     this.player.draw();
+    this.platform.draw();
     this.enemies.forEach((e) => e.draw());
   }
 
   move() {
     this.background.move();
     this.player.move();
+    this.platform.move();
     this.enemies.forEach((e) => e.move());
   }
 
@@ -89,7 +92,7 @@ class Game {
       this.ctx.canvas.height / 2
     );
 
-    this.player = new Player(ctx);
+    this.player = new Player(ctx, this.platform);
     this.enemies = [];
   }
 
